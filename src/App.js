@@ -14,8 +14,8 @@ function App() {
   }
 
   useEffect(()=>{
-    console.log(currentIndex);
-  }, [currentIndex])
+    
+  }, [contacts])
   
   function getContacts(){
     if(JSON.parse(localStorage.getItem('list')) === null){
@@ -31,12 +31,12 @@ function App() {
       setContact([...contacts, obj])
       localStorage.setItem('list', JSON.stringify([...contacts, obj]))
     }else{
-      var list = contacts
+      const list = getContacts()
       list[currentIndex] = {id:list[currentIndex].id, name:data.name, phone:data.phone}
-      setContact([list])
+      setContact(list)
       console.log(list);
       localStorage.setItem('list', JSON.stringify(list))
-      window.location.reload()
+      // window.location.reload()
       setCurrentIndex(-1)
     }
   }
