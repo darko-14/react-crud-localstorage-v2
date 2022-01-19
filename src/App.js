@@ -1,17 +1,21 @@
 import './App.css';
 import Header from './components/Header';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Contacts from './components/Contacts';
 import AddNewContact from './components/AddNewContact'
 
 function App() {
-  const [showAdd, setShowAdd] = useState(false) 
+  const [showAdd, setShowAdd] = useState(true) 
   const [contacts, setContact] = useState(getContacts)
-  const [editUser, setEditUser] = useState([])
+  const [currentIndex, setCurrentIndex] = useState(-1)
 
   function handleShowAdd() {
     setShowAdd(!showAdd)
   }
+
+  useEffect(()=>{
+    console.log(currentIndex);
+  }, [currentIndex])
   
   function getContacts(){
     if(JSON.parse(localStorage.getItem('list')) === null){
@@ -21,10 +25,20 @@ function App() {
   }
 
   const onAdd = data => {
-    var id = contacts.length;
-    var obj = {id, ...data}
-    setContact([...contacts, obj])
-    localStorage.setItem('list', JSON.stringify([...contacts, obj]))
+    if(currentIndex === -1){
+      var id = contacts.length;
+      var obj = {id, ...data}
+      setContact([...contacts, obj])
+      localStorage.setItem('list', JSON.stringify([...contacts, obj]))
+    }else{
+      var list = contacts
+      list[currentIndex] = {id:list[currentIndex].id, name:data.name, phone:data.phone}
+      setContact([list])
+      console.log(list);
+      localStorage.setItem('list', JSON.stringify(list))
+      window.location.reload()
+      setCurrentIndex(-1)
+    }
   }
 
   const onDelete = id => {
@@ -33,14 +47,14 @@ function App() {
   }
 
   const onEdit = data => {
-    setEditUser({id: data.id, name: data.name, phone: data.phone})
-    console.log('edit');
+    console.log(data);
+    setCurrentIndex(data.id)
   }
 
   return (
     <div className="App">
       <Header handleShowAdd={handleShowAdd} formOpened={showAdd}/>
-      {showAdd && <AddNewContact onAdd={onAdd} editUser={editUser}/>}
+      {showAdd && <AddNewContact onAdd={onAdd} contacts={contacts} currentIndex={currentIndex}/>}
       {contacts.length > 0 ? <Contacts contacts={contacts} onDelete={onDelete} onEdit={onEdit}/> : 'No contacts'}
     </div>
   );

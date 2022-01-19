@@ -13,10 +13,10 @@ const Contacts = ({ contacts, onDelete, onEdit }) => {
         <div className='contacts'>
             {
                 contacts.map((contact, index) => {
-                    return <div>
+                    return <div key={index}>
                         {showDetails && <ContactDetails contact={contact}/>}
                         <Contact 
-                        key={index} 
+                         
                         contact={contact} 
                         index={index} 
                         onDelete={onDelete} 
