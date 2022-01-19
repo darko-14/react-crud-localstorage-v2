@@ -13,10 +13,6 @@ function App() {
     setShowAdd(!showAdd)
   }
 
-  useEffect(()=>{
-    
-  }, [contacts])
-  
   function getContacts(){
     if(JSON.parse(localStorage.getItem('list')) === null){
       localStorage.setItem('list', JSON.stringify([]))
@@ -26,7 +22,7 @@ function App() {
 
   const onAdd = data => {
     if(currentIndex === -1){
-      var id = contacts.length;
+      var id = Math.floor(Math.random() * 1000)
       var obj = {id, ...data}
       setContact([...contacts, obj])
       localStorage.setItem('list', JSON.stringify([...contacts, obj]))

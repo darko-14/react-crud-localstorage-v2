@@ -13,7 +13,7 @@ const Contact = ({ index, contact, onDelete, onEdit, onDoubleClick }) => {
     return (
         <div className='contact'>
             <div onDoubleClick={onDoubleClick}>
-                <h3>{contact.id+1}. {contact.name}</h3>
+                <h3>{index+1}. {contact.name}</h3>
             </div>
             <h4>{contact.phone}</h4>
             <div style={{marginTop: 17}}>
